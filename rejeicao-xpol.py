@@ -22,12 +22,10 @@ subtitulo = st.text_input("Subtítulo (opcional)", value="")
 
 # Configurações visuais
 st.markdown("### Aparência do gráfico")
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 with col1:
-    tamanho_titulo = st.number_input("Tamanho do título", value=16, min_value=8, max_value=32, step=1)
-with col2:
     tamanho_subtitulo = st.number_input("Tamanho do subtítulo", value=12, min_value=6, max_value=28, step=1)
-with col3:
+with col2:
     tamanho_rotulos = st.number_input("Tamanho dos rótulos/legenda", value=10, min_value=6, max_value=20, step=1)
 
 fator_correcao = st.number_input("Fator de correção (dB) a aplicar em X-POL", value=0.0, step=0.1)
@@ -102,6 +100,20 @@ if copol_file and xpol_file:
         # Gráfico polar
         # ======================
         st.subheader("Gráfico polar — Rejeição (Co-pol - X-pol corrigido)")
+
+        # Espaçamento acima do gráfico
+        st.markdown(
+            f"<div style='height:20px'></div>", unsafe_allow_html=True
+        )
+
+        # Subtítulo posicionado logo abaixo do título
+        if subtitulo.strip():
+            st.markdown(
+                f"<h4 style='text-align:center; font-size:{tamanho_subtitulo}px; margin-top:-15px; margin-bottom:10px;'>{subtitulo}</h4>",
+                unsafe_allow_html=True
+            )
+
+        # Geração do gráfico
         ang_rad = np.deg2rad(df_res["Azimuth"].values)
         fig = plt.figure(figsize=(7,7))
         ax = fig.add_subplot(111, polar=True)
@@ -111,11 +123,7 @@ if copol_file and xpol_file:
         ax.set_theta_direction(-1)
         ax.grid(True)
         ax.legend(loc='upper right', fontsize=tamanho_rotulos)
-
-        # Títulos configuráveis
-        ax.set_title(titulo, va='bottom', fontsize=tamanho_titulo, fontweight='bold')
-        if subtitulo.strip():
-            plt.figtext(0.5, 0.05, subtitulo, ha='center', fontsize=tamanho_subtitulo)
+        ax.set_title(titulo, va='bottom')  # mantém fonte padrão
 
         st.pyplot(fig)
 
