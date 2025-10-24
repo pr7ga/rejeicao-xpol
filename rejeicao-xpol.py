@@ -51,10 +51,10 @@ if copol_file and xpol_file:
     )
 
     # Aplica correção no Xpol
-    df["Xpol_corrigido"] = df[f"{val_col_xpol}"] + fator_correcao
+    df["Xpol_corrigido"] = df[f"{val_col_xpol}_xpol"] + fator_correcao
 
     # Calcula rejeição (copol - xpol corrigido)
-    df["Rejeição (dB)"] = df[f"{val_col_copol}"] - df["Xpol_corrigido"]
+    df["Rejeição (dB)"] = df[f"{val_col_copol}_copol"] - df["Xpol_corrigido"]
 
     # ==========================
     # Gráfico Polar
